@@ -20,8 +20,12 @@ export const CreateLinkSchema = z.object({
 });
 
 export const ContentSchema = z.object({
+  id: z.number().optional(),
   title: z.string().min(1, "Title is required"),
   link: z.string().min(1, "Link is necessary"),
   type: z.enum(["Audio", "Video", "Image", "Article"]),
   tags: z.array(z.string()).optional()
 });
+
+export type ContentType = z.infer<typeof ContentSchema>
+export type TagType = z.infer<typeof TagSchema>
