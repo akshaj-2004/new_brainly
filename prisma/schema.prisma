@@ -22,13 +22,14 @@ model Tag {
 }
 
 model Link {
-  id      Int     @id @default(autoincrement())
-  hash    String
-  userId  Int
-  user    User    @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  hash      String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  content   Content? 
 }
 
-enum ContentType{
+enum ContentType {
   Audio
   Video
   Image
@@ -36,10 +37,13 @@ enum ContentType{
 }
 
 model Content {
-  id       Int      @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   title    String
   type     ContentType
   userId   Int
-  user     User     @relation(fields: [userId], references: [id])
-  tags     Tag[]    @relation("ContentTags")
+  linkId   Int       @unique 
+
+  user    User     @relation(fields: [userId], references: [id])
+  link    Link     @relation(fields: [linkId], references: [id])
+  tags    Tag[]    @relation("ContentTags")
 }
